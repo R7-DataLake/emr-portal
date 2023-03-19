@@ -56,7 +56,7 @@ export class ModalPatientOpdVisitComponent {
       this.diagData = response.data.results;
     } catch (error: any) {
       this.loading = false;
-      this.message.error('เกิดข้อผิดพลาด')
+      // this.message.error('เกิดข้อผิดพลาด')
       console.log(error);
     }
   }
@@ -69,7 +69,7 @@ export class ModalPatientOpdVisitComponent {
       this.drugData = response.data.results;
     } catch (error: any) {
       this.loading = false;
-      this.message.error('เกิดข้อผิดพลาด')
+      // this.message.error('เกิดข้อผิดพลาด')
       console.log(error);
     }
   }
@@ -82,7 +82,7 @@ export class ModalPatientOpdVisitComponent {
       this.labData = response.data.results;
     } catch (error: any) {
       this.loading = false;
-      this.message.error('เกิดข้อผิดพลาด')
+      // this.message.error('เกิดข้อผิดพลาด')
       console.log(error);
     }
   }
