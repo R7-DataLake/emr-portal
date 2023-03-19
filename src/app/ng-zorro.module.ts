@@ -29,6 +29,9 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+
 
 @NgModule({
   declarations: [],
@@ -61,7 +64,9 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
     NzDatePickerModule,
     NzTabsModule,
     NzBadgeModule,
-    NzStatisticModule
+    NzStatisticModule,
+    NzSpinModule,
+    NzDescriptionsModule
   ],
   exports: [
     NzFormModule,
@@ -91,7 +96,9 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
     NzDatePickerModule,
     NzTabsModule,
     NzBadgeModule,
-    NzStatisticModule
+    NzStatisticModule,
+    NzSpinModule,
+    NzDescriptionsModule
   ]
 })
 export class NgZorroModule { }

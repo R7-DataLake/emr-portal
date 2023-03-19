@@ -51,5 +51,35 @@
       </div>
     </div>
 
+    <nz-divider nzDashed [nzText]="text" nzOrientation="left">
+      <ng-template #text>
+        <span nz-icon nzType="team"></span>
+        ทะเบียนผู้รับบริการ
+      </ng-template>
+    </nz-divider>
+
+    <nz-table #basicTable [nzData]="listOfData">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Address</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data">
+          <td>{{ data.name }}</td>
+          <td>{{ data.age }}</td>
+          <td>{{ data.address }}</td>
+          <td>
+            <a>Action 一 {{ data.name }}</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a>Delete</a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+
   </div>
 </nz-content>

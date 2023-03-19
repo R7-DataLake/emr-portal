@@ -7,15 +7,9 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="6">ชื่อผู้ใช้งาน</nz-form-label>
             <nz-form-control nzHasFeedback [nzSpan]="18" nzErrorTip="กรุณาระบุชื่อผู้ใช้งาน">
-              <nz-input-group [nzSuffix]="suffixUsername">
+              <nz-input-group>
                 <input nz-input placeholder="username" name="username" formControlName="username" required />
               </nz-input-group>
-              <ng-template #suffixUsername>
-                <i nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle"
-                  *ngIf="validateForm.controls['username'].value.length>0"
-                  (click)="validateForm.controls['username'].setValue('')"></i> &nbsp;&nbsp;
-              </ng-template>
-
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
@@ -26,9 +20,6 @@
                   [type]="passwordVisible ? 'text' : 'password'" placeholder="password" required />
               </nz-input-group>
               <ng-template #suffixPassword>
-                <i nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle"
-                  *ngIf="validateForm.controls['password'].value.length>0"
-                  (click)="validateForm.controls['password'].setValue('')"></i> &nbsp;&nbsp;
                 <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
                   (click)="passwordVisible = !passwordVisible" nzTheme="outline"></i>
               </ng-template>

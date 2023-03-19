@@ -26,23 +26,45 @@ export class DashboardComponent implements OnInit {
   opdTotal = 0;
   ipdTotal = 0;
 
+  listOfData: any[] = [
+    {
+      key: '1',
+      name: 'John Brown',
+      age: 32,
+      address: 'New York No. 1 Lake Park'
+    },
+    {
+      key: '2',
+      name: 'Jim Green',
+      age: 42,
+      address: 'London No. 1 Lake Park'
+    },
+    {
+      key: '3',
+      name: 'Joe Black',
+      age: 32,
+      address: 'Sidney No. 1 Lake Park'
+    }
+  ];
+
+
   constructor (
     private message: NzMessageService,
     private reportService: ReportService,
   ) { }
 
   ngOnInit() {
-    this.getTotal();
+    // this.getTotal();
   }
 
   onServiceChartInit(echart: any) {
     this.serviceChartInstance = echart;
-    this.getLastServices();
+    // this.getLastServices();
   }
 
   onPersonChartInit(echart: any) {
     this.personChartInstance = echart;
-    this.getPerson();
+    // this.getPerson();
   }
 
   private async getLastServices() {

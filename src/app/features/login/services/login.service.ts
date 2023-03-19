@@ -1,29 +1,22 @@
-import { Injectable } from '@angular/core';
-import axios from 'axios';
-import { environment } from '../../../../environments/environment';
+import { Inject, Injectable } from '@angular/core';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
+  private axiosInstance!: AxiosInstance;
 
-  private axiosInstance = axios.create({
-    baseURL: environment.apiUrl
-  });
-
-  constructor () {
-    this.axiosInstance.interceptors.response.use(response => {
-      return response;
-    }, error => {
-      return Promise.reject(error);
+  constructor (@Inject('API_URL') private apiUrl: any) {
+    this.axiosInstance = axios.create({
+      baseURL: `${this.apiUrl}`
     })
   }
 
-  async login(username: any, password: any) {
-    const url = `/login`;
-    return this.axiosInstance.post(url, {
-      username, password
-    });
+  login(username: any, password: any): Promise<AxiosResponse> {
+    const url = `/login`
+    return this.axiosInstance.post(url, { username, password })
   }
+
 }

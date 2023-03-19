@@ -48,7 +48,7 @@ export class LoginComponent {
         const response: any = await this.loginService.login(username, password);
         this.message.remove(messageId);
         if (response.data) {
-          const token = response.data.access_token;
+          const token = response.data.accessToken;
           sessionStorage.setItem('token', token);
           this.message.create('success', 'เข้าสู่ระบบสำเร็จ');
           this.router.navigate(['/dashboard']);

@@ -6,31 +6,11 @@
         <span nz-icon nzType="pie-chart"></span>
         <span>Dashboard</span>
       </li>
-      <li nz-submenu nzTitle="สถิติต่างๆ" nzIcon="area-chart">
-        <ul>
-          <!-- <li nz-menu-item routerLink="/hospitals" routerLinkActive="ant-menu-item-selected">สถิติการส่งข้อมูล</li> -->
-          <li nz-menu-item routerLink="/tables" routerLinkActive="ant-menu-item-selected">ตารางข้อมูล</li>
-        </ul>
-      </li>
-      <li nz-submenu nzTitle="ข้อมูลพื้นฐาน" nzIcon="database">
-        <ul>
-          <li nz-menu-item routerLink="/drugs" routerLinkActive="ant-menu-item-selected">ข้อมูลยาและเวชภัณฑ์</li>
-          <li nz-menu-item routerLink="/drug-usages" routerLinkActive="ant-menu-item-selected">ข้อมูลวิธีการใช้</li>
-          <li nz-menu-item routerLink="/labs" routerLinkActive="ant-menu-item-selected">ข้อมูล LAB</li>
-          <li nz-menu-item routerLink="/lab-groups" routerLinkActive="ant-menu-item-selected">ข้อมูลกลุ่ม LAB</li>
-          <li nz-menu-item routerLink="/occupations" routerLinkActive="ant-menu-item-selected">ข้อมูลอาชีพ</li>
-          <li nz-menu-item routerLink="/insurances" routerLinkActive="ant-menu-item-selected">ข้อมูลสิทธิ์การรักษา</li>
-          <li nz-menu-item routerLink="/nations" routerLinkActive="ant-menu-item-selected">ข้อมูลสัญชาติ</li>
-          <li nz-menu-item routerLink="/providers" routerLinkActive="ant-menu-item-selected">ข้อมูลเจ้าหน้าที่</li>
-        </ul>
+      <li nz-menu-item routerLink="/patient" routerLinkActive="ant-menu-item-selected">
+        <span nz-icon nzType="team"></span>
+        <span>ทะเบียนผู้ป่วย</span>
       </li>
 
-      <!-- <li nz-submenu nzTitle="จัดการระบบ" nzIcon="setting">
-        <ul>
-          <li nz-menu-item routerLink="/settings" routerLinkActive="ant-menu-item-selected">ตั้งค่าระบบ</li>
-          <li nz-menu-item routerLink="/users" routerLinkActive="ant-menu-item-selected">ผู้ใช้งานในหน่วยงาน</li>
-        </ul>
-      </li> -->
     </ul>
   </nz-sider>
   <nz-layout>
@@ -38,7 +18,7 @@
       <div nz-row>
         <div nz-col nzFlex="auto">
           <div style="padding: 10px 0 10px 16px;">
-            <h3 nz-typography>ระบบกลางจัดการข้อมูล</h3>
+            <h3 nz-typography>EMR Portal</h3>
           </div>
         </div>
         <div nz-col nzFlex="200px" style="text-align: right; padding-right: 16px;">

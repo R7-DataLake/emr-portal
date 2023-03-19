@@ -1,0 +1,108 @@
+<nz-modal [(nzVisible)]="isVisible" nzCentered="true" nzKeyboard="false" nzMaskClosable="false" nzCentered
+  [nzWidth]="680" nzTitle="ข้อมูลรับบริการผู้ป่วยนอก (OPD)" (nzOnOk)="isVisible = false"
+  (nzOnCancel)="isVisible = false">
+  <ng-container *nzModalContent>
+    <nz-tabset (nzSelectedIndexChange)="onTabChange($event)">
+      <nz-tab nzTitle="ข้อมูลรับบริการ">
+        <nz-spin nzTip="Loading..." [nzSpinning]="loading">
+          <nz-descriptions nzTitle="ข้อมูลผู้ป่วย" [nzColumn]="4">
+            <nz-descriptions-item nzTitle="HN">{{personInfo.hn}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="CID">{{personInfo.cid}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="ชื่อ - สกุล" [nzSpan]="2">{{personInfo.title}}{{personInfo.fname}}
+              {{personInfo.lname}}</nz-descriptions-item>
+
+            <nz-descriptions-item nzTitle="วันเกิด">{{personInfo.birth}} ({{personInfo.age}} ปี)</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="สัญชาติ">{{personInfo.nation}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Typearea" [nzSpan]="2">{{personInfo.typearea}}</nz-descriptions-item>
+          </nz-descriptions>
+
+          <nz-descriptions nzTitle="การคัดกรอง" [nzColumn]="4">
+            <nz-descriptions-item nzTitle="วันที่รับบริการ" [nzSpan]="2">{{opdInfo.date_serv}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="เวลา">{{opdInfo.time_serv}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="SEQ">{{opdInfo.seq}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="CC" [nzSpan]="4">{{opdInfo.chiefcomp}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="อุณหภูมิ">{{opdInfo.btemp}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="ความดัน">{{opdInfo.sbp}}/{{opdInfo.dbp}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="PR">{{opdInfo.pr}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="RR">{{opdInfo.rr}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Dx" [nzSpan]="2">{{opdInfo.diag_text}}</nz-descriptions-item>
+          </nz-descriptions>
+          <nz-descriptions nzTitle="สิทธิ์การรักษา" [nzColumn]="4">
+            <nz-descriptions-item nzTitle="สิทธิ์" [nzSpan]="3">{{opdInfo.ins_type_name}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="เลขที่">{{opdInfo.ins_number}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="สถานบริการหลัก" [nzSpan]="2">{{opdInfo.ins_hospmain_name}}
+              ({{opdInfo.ins_hospmain}})</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="สถานบริการรอง" [nzSpan]="2">{{opdInfo.ins_hospsub_name}}
+              ({{opdInfo.ins_hospsub}})</nz-descriptions-item>
+          </nz-descriptions>
+        </nz-spin>
+
+      </nz-tab>
+      <nz-tab nzTitle="การวินิจฉัย">
+        <nz-table nzSize="small" [nzShowPagination]="false" #diagTable [nzData]="diagData" [nzLoading]="loading">
+          <thead>
+            <tr>
+              <th>รหัส</th>
+              <th>รายละเอียด</th>
+              <th>ประเภทวินิจฉัย</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of diagTable.data">
+              <td>{{ data.diag }}</td>
+              <td>{{ data.diag_name }}</td>
+              <td>{{ data.dxtype }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+      <nz-tab nzTitle="รายการยาและเวชภัณฑ์">
+        <nz-table nzSize="small" [nzShowPagination]="false" #drugTable [nzData]="drugData" [nzLoading]="loading">
+          <thead>
+            <tr>
+              <th>ชื่อ</th>
+              <th>จำนวน</th>
+              <th>หน่วย</th>
+              <th>แพ็ค</th>
+              <th>ราคาต่อหน่วย</th>
+              <th>วิธีใช้</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of drugTable.data">
+              <td>{{ data.drug_name }}</td>
+              <td>{{ data.amount | number }}</td>
+              <td>{{ data.unit }}</td>
+              <td>{{ data.unit_pack }}</td>
+              <td>{{ data.drugprice | number }}</td>
+              <td>{{ data.usage_1 }}, {{ data.usage_2 }}, {{ data.usage_3 }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+      <nz-tab nzTitle="ผลตรวจห้องปฏิบัติการ">
+        <nz-table nzSize="small" [nzShowPagination]="false" #labTable [nzData]="labData" [nzLoading]="loading">
+          <thead>
+            <tr>
+              <th>ชื่อ</th>
+              <th>กลุ่ม</th>
+              <th>ผล</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of labTable.data">
+              <td>{{ data.lab_name }}</td>
+              <td>{{ data.lab_group_name }}</td>
+              <td>{{ data.labresult }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+    </nz-tabset>
+  </ng-container>
+
+  <div *nzModalFooter>
+    <button nz-button nzType="primary" (click)="isVisible = false">ตกลง</button>
+  </div>
+
+</nz-modal>
