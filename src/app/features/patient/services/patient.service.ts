@@ -39,6 +39,11 @@ export class PatientService {
     return this.axiosInstance.post(url, { cid })
   }
 
+  getLastIPD(cid: any): Promise<AxiosResponse> {
+    const url = `/ipd/last`
+    return this.axiosInstance.post(url, { cid })
+  }
+
   search(cid: any): Promise<AxiosResponse> {
     const url = `/search`
     return this.axiosInstance.post(url, { cid })

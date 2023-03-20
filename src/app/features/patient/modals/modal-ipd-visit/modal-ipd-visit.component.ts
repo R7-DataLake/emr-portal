@@ -3,14 +3,14 @@ import * as _ from 'lodash';
 import { DateTime } from 'luxon';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { EmrService } from '../../services/emr.service';
-import { PatientService } from '../../services/patient.service';
 
 @Component({
-  selector: 'app-modal-patient-opd-visit',
-  templateUrl: './modal-patient-opd-visit.component.html',
-  styleUrls: ['./modal-patient-opd-visit.component.css']
+  selector: 'app-modal-ipd-visit',
+  templateUrl: './modal-ipd-visit.component.html',
+  styleUrls: ['./modal-ipd-visit.component.css']
 })
-export class ModalPatientOpdVisitComponent {
+export class ModalIpdVisitComponent {
+
 
   isVisible = false;
   loading = false;
@@ -18,36 +18,42 @@ export class ModalPatientOpdVisitComponent {
   diagData: any = [];
   drugData: any = [];
   labData: any = [];
-  opdInfo: any = {};
+  ipdInfo: any = {};
   personInfo: any = {};
 
   hospcode: any;
-  seq: any;
+  an: any;
   hn: any;
   zoneKey: any;
 
   constructor (
-    private patientService: PatientService,
     private emrService: EmrService,
     private message: NzMessageService,
   ) { }
 
-  showModal(hospcode: any, seq: any, hn: any, zoneKey: any) {
+  /**
+   * 
+   * @param hospcode รหัสหน่วยบริการ
+   * @param an ลำดับที่ Admin
+   * @param hn เลขประจำตัวผู้ป่วย
+   * @param zoneKey รหัส Zone
+   */
+  showModal(hospcode: any, an: any, hn: any, zoneKey: any) {
     this.hospcode = hospcode;
-    this.seq = seq;
+    this.an = an;
     this.hn = hn;
     this.zoneKey = zoneKey;
 
     this.diagData = [];
     this.drugData = [];
     this.labData = [];
-    this.opdInfo = {};
+    this.ipdInfo = {};
     this.personInfo = {};
 
     this.isVisible = true;
 
     this.getPersonInfo();
-    this.getOpdInfo();
+    this.getIpdInfo();
   }
 
   handleOk() {
@@ -57,7 +63,7 @@ export class ModalPatientOpdVisitComponent {
   async getDiag() {
     this.loading = true;
     try {
-      const response: any = await this.emrService.getOpdDiag(this.hospcode, this.hn, this.seq, this.zoneKey);
+      const response: any = await this.emrService.getIpdDiag(this.hospcode, this.hn, this.an, this.zoneKey);
       this.loading = false;
       this.diagData = response.data.results;
     } catch (error: any) {
@@ -70,22 +76,9 @@ export class ModalPatientOpdVisitComponent {
   async getDrug() {
     this.loading = true;
     try {
-      const response: any = await this.emrService.getOpdDrug(this.hospcode, this.hn, this.seq, this.zoneKey);
+      const response: any = await this.emrService.getIpdDrug(this.hospcode, this.hn, this.an, this.zoneKey);
       this.loading = false;
       this.drugData = response.data.results;
-    } catch (error: any) {
-      this.loading = false;
-      // this.message.error('เกิดข้อผิดพลาด')
-      console.log(error);
-    }
-  }
-
-  async getLab() {
-    this.loading = true;
-    try {
-      const response: any = await this.emrService.getOpdLab(this.hospcode, this.hn, this.seq, this.zoneKey);
-      this.loading = false;
-      this.labData = response.data.results;
     } catch (error: any) {
       this.loading = false;
       // this.message.error('เกิดข้อผิดพลาด')
@@ -117,13 +110,16 @@ export class ModalPatientOpdVisitComponent {
     }
   }
 
-  async getOpdInfo() {
+  async getIpdInfo() {
     this.loading = true;
     try {
-      const response: any = await this.emrService.getOpdInfo(this.hospcode, this.hn, this.seq, this.zoneKey);
+      const response: any = await this.emrService.getIpdInfo(this.hospcode, this.hn, this.an, this.zoneKey);
       this.loading = false;
-      this.opdInfo = response.data;
-      this.opdInfo.date_serv = DateTime.fromFormat(response.data.date_serv, 'yyyy-MM-dd', { zone: 'Asia/Bangkok', locale: 'th' }).toLocaleString(DateTime.DATE_MED);
+      this.ipdInfo = response.data;
+      this.ipdInfo.dateadm = DateTime.fromFormat(response.data.dateadm, 'yyyy-MM-dd', { zone: 'Asia/Bangkok', locale: 'th' }).toLocaleString(DateTime.DATE_MED);
+      this.ipdInfo.datedsc = DateTime.fromFormat(response.data.datedsc, 'yyyy-MM-dd', { zone: 'Asia/Bangkok', locale: 'th' }).toLocaleString(DateTime.DATE_MED);
+      this.ipdInfo.timedsc = DateTime.fromFormat(this.ipdInfo.timedsc, 'HHmm').toFormat('HH:mm');
+      this.ipdInfo.timeadm = DateTime.fromFormat(this.ipdInfo.timeadm, 'HHmm').toFormat('HH:mm');
     } catch (error: any) {
       this.loading = false;
       this.message.error('เกิดข้อผิดพลาด')
@@ -140,10 +136,6 @@ export class ModalPatientOpdVisitComponent {
     } else if (tabIndex == 2) {
       if (_.isEmpty(this.drugData)) {
         this.getDrug();
-      }
-    } else if (tabIndex == 3) {
-      if (_.isEmpty(this.labData)) {
-        this.getLab();
       }
     }
 

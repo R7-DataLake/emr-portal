@@ -12,85 +12,80 @@
     nzTitle="ทะเบียนผู้ป่วย">
   </nz-page-header>
   <div class="inner-content">
-    <nz-tabset>
-      <nz-tab nzSize="'large'" [nzTitle]="patientTitleTemplate">
-        <ng-template #patientTitleTemplate>
-          <span nz-icon nzType="team"></span>
-          ทะเบียนผู้ป่วย (ในหน่วยบริการ)
+    <div nz-row style="padding-bottom: 10px;">
+      <div nz-col nzSpan="8">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
+          <input type="text" [(ngModel)]="personQuery" nz-input placeholder="ระบุเลขบัตรประชาชน" />
+        </nz-input-group>
+        <ng-template #suffixButton>
+          <nz-button-group>
+            <button (click)="searchPerson()" nz-button nzType="primary" nzSearch>ค้นหา</button>
+            <button (click)="refreshPerson()" nz-button>ทั้งหมด</button>
+          </nz-button-group>
         </ng-template>
-        <div nz-row style="padding-bottom: 10px;">
-          <div nz-col nzSpan="8">
-            <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
-              <input type="text" [(ngModel)]="personQuery" nz-input placeholder="ระบุเลขบัตรประชาชน" />
-            </nz-input-group>
-            <ng-template #suffixButton>
-              <nz-button-group>
-                <button (click)="searchPerson()" nz-button nzType="primary" nzSearch>ค้นหา</button>
-                <button (click)="refreshPerson()" nz-button>ทั้งหมด</button>
-              </nz-button-group>
-            </ng-template>
-          </div>
-        </div>
-        <nz-table nzShowPagination="false" [nzLoading]="loading" [nzData]="datasets" nzSize="small"
-          [nzPageSize]="pageSize">
-          <thead>
-            <tr>
-              <th>HN</th>
-              <th>ชื่อ - สกุล</th>
-              <th>วันเกิด</th>
-              <th>อายุ (ปี)</th>
-              <th>เพศ</th>
-              <th>วันที่แก้ไขข้อมูล</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let data of datasets">
-              <td>{{data.hn}}</td>
-              <td>{{data.fname}} {{data.lname}}</td>
-              <td>{{data.birth}}</td>
-              <td>{{data.age}}</td>
-              <td>{{data.sex}}</td>
-              <td>{{data.d_update}}</td>
-              <td style="text-align: center;">
-                <button nz-button nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
-                  <span nz-icon nzType="menu"></span>
-                  เมนู
-                </button>
-                <nz-dropdown-menu #menu="nzDropdownMenu">
-                  <ul nz-menu>
-                    <li nz-menu-item (click)="openOpdVisit(data)">ประวัติรับบริการผู้ป่วยนอก (OPD)</li>
-                    <li nz-menu-item>ประวัติรับบริการผู้ป่วยใน (IPD)</li>
-                    <li nz-menu-divider></li>
-                    <li nz-menu-item>ข้อมูลผู้ป่วย</li>
-                  </ul>
-                </nz-dropdown-menu>
-              </td>
-            </tr>
-          </tbody>
-        </nz-table>
-
-        <br>
-        <nz-pagination [nzPageIndex]="pageIndex" [nzTotal]="total" nzShowSizeChanger [nzPageSize]="pageSize"
-          [nzPageSizeOptions]="[20,50,100,500]" (nzPageIndexChange)="onPageIndexChange($event)"
-          (nzPageSizeChange)="onPageSizeChange($event)" [nzShowTotal]="totalTemplate"></nz-pagination>
-      </nz-tab>
-      <nz-tab [nzTitle]="searchTitleTemplate">
-        <ng-template #searchTitleTemplate>
-          <span nz-icon nzType="search"></span>
-          ค้นหาผู้ป่วยจากหน่วยบริการอื่น
-        </ng-template>
-        Content of Tab Pane 2</nz-tab>
-    </nz-tabset>
-
-
+      </div>
+    </div>
+    <nz-table nzShowPagination="false" [nzLoading]="loading" [nzData]="datasets" nzSize="small" [nzPageSize]="pageSize">
+      <thead>
+        <tr>
+          <th>HN</th>
+          <th>เลขบัตรประชาชน</th>
+          <th>ชื่อ - สกุล</th>
+          <th>วันเกิด</th>
+          <th>อายุ (ปี)</th>
+          <th>เพศ</th>
+          <th>โซน</th>
+          <th>ปรับปรุงล่าสุด</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of datasets">
+          <td>{{data.hn}}</td>
+          <td>{{data.cid}}</td>
+          <td>{{data.fname}} {{data.lname}}</td>
+          <td>{{data.birth}}</td>
+          <td>{{data.age}}</td>
+          <td>{{data.sex}}</td>
+          <td>{{data.zone_name}}</td>
+          <td>{{data.d_update}}</td>
+          <td style="text-align: center;">
+            <button nz-button nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
+              <span nz-icon nzType="menu"></span>
+              เมนู
+            </button>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+              <ul nz-menu>
+                <li nz-menu-item (click)="openOpdVisit(data)">
+                  <span nz-icon nzType="search" nzTheme="outline" style="margin-right: 5px;"></span>
+                  ประวัติรับบริการผู้ป่วยนอก (OPD)
+                </li>
+                <li nz-menu-item (click)="openIpdVisit(data)">
+                  <span nz-icon nzType="search" nzTheme="outline" style="margin-right: 5px;"></span>
+                  ประวัติรับบริการผู้ป่วยใน (IPD)
+                </li>
+                <li nz-menu-divider></li>
+                <li nz-menu-item>
+                  <span nz-icon nzType="profile" nzTheme="outline" style="margin-right: 5px;"></span>
+                  Patient Profile
+                </li>
+              </ul>
+            </nz-dropdown-menu>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <br>
+    <nz-pagination [nzPageIndex]="pageIndex" [nzTotal]="total" nzShowSizeChanger [nzPageSize]="pageSize"
+      [nzPageSizeOptions]="[20,50,100,500]" (nzPageIndexChange)="onPageIndexChange($event)"
+      (nzPageSizeChange)="onPageSizeChange($event)" [nzShowTotal]="totalTemplate"></nz-pagination>
   </div>
 </nz-content>
 
 <ng-template #totalTemplate let-total>ทั้งหมด {{ total | number }} รายการ</ng-template>
 
-<nz-drawer [nzClosable]="true" [nzVisible]="visibleOpdVisit" nzPlacement="right" nzTitle="ประวัติรับบริการผู้ป่วยนอก"
-  (nzOnClose)="closeOpdVisit()">
+<nz-drawer [nzClosable]="true" [nzVisible]="visibleOpdVisit" nzPlacement="right"
+  nzTitle="ประวัติรับบริการผู้ป่วยนอก (OPD)" (nzOnClose)="closeOpdVisit()">
   <ng-container *nzDrawerContent>
     <nz-spin nzTip="Loading..." [nzSpinning]="loading">
       <nz-card *ngFor="let item of lastOpd" style="width:100%; margin-bottom: 16px;" [nzTitle]="item.date_serv_th"
@@ -108,4 +103,26 @@
   </ng-container>
 </nz-drawer>
 
+<nz-drawer [nzClosable]="true" [nzVisible]="visibleIpdVisit" nzPlacement="right"
+  nzTitle="ประวัติรับบริการผู้ป่วยใน (IPD)" (nzOnClose)="closeIpdVisit()">
+  <ng-container *nzDrawerContent>
+    <nz-spin nzTip="Loading..." [nzSpinning]="loading">
+      <nz-card *ngFor="let item of lastIpd" style="width:100%; margin-bottom: 16px;" [nzTitle]="item.dateadm_th"
+        [nzExtra]="extraTemplate">
+        <strong>{{item.hospname}} ({{item.hospcode}})</strong> <br>
+        AN: {{item.an}} <br>
+        Discharge: {{item.datedsc_th}} <br>
+        Dischs: {{item.dischs}} <br>
+        Discht: {{item.discht}} <br>
+        <ng-template #extraTemplate>
+          <a (click)="openIpdDetail(item)">รายละเอียด</a>
+        </ng-template>
+      </nz-card>
+    </nz-spin>
+
+
+  </ng-container>
+</nz-drawer>
+
 <app-modal-patient-opd-visit></app-modal-patient-opd-visit>
+<app-modal-ipd-visit></app-modal-ipd-visit>
