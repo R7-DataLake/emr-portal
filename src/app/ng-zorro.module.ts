@@ -31,7 +31,7 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
-
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
 @NgModule({
   declarations: [],
@@ -66,7 +66,8 @@ import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
     NzBadgeModule,
     NzStatisticModule,
     NzSpinModule,
-    NzDescriptionsModule
+    NzDescriptionsModule,
+    NzEmptyModule
   ],
   exports: [
     NzFormModule,
@@ -98,7 +99,8 @@ import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
     NzBadgeModule,
     NzStatisticModule,
     NzSpinModule,
-    NzDescriptionsModule
+    NzDescriptionsModule,
+    NzEmptyModule
   ]
 })
 export class NgZorroModule { }

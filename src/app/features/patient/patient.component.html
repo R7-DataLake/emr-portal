@@ -88,6 +88,7 @@
   nzTitle="ประวัติรับบริการผู้ป่วยนอก (OPD)" (nzOnClose)="closeOpdVisit()">
   <ng-container *nzDrawerContent>
     <nz-spin nzTip="Loading..." [nzSpinning]="loading">
+      <nz-empty *ngIf="lastOpd.length === 0"></nz-empty>
       <nz-card *ngFor="let item of lastOpd" style="width:100%; margin-bottom: 16px;" [nzTitle]="item.date_serv_th"
         [nzExtra]="extraTemplate">
         <strong>{{item.hospname}} ({{item.hospcode}})</strong> <br>
@@ -107,6 +108,7 @@
   nzTitle="ประวัติรับบริการผู้ป่วยใน (IPD)" (nzOnClose)="closeIpdVisit()">
   <ng-container *nzDrawerContent>
     <nz-spin nzTip="Loading..." [nzSpinning]="loading">
+      <nz-empty *ngIf="lastIpd.length === 0"></nz-empty>
       <nz-card *ngFor="let item of lastIpd" style="width:100%; margin-bottom: 16px;" [nzTitle]="item.dateadm_th"
         [nzExtra]="extraTemplate">
         <strong>{{item.hospname}} ({{item.hospcode}})</strong> <br>
