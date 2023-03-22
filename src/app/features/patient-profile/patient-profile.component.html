@@ -1,0 +1,153 @@
+<nz-content>
+  <nz-breadcrumb>
+    <nz-breadcrumb-item>
+      <a routerLink="/">
+        <span nz-icon nzType="home"></span>
+      </a>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+      <a routerLink="/patient">
+        <span nz-icon nzType="team"></span>
+        ทะเบียนผู้ป่วย
+      </a>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+      <span nz-icon nzType="user"></span>
+      Patient Profile
+    </nz-breadcrumb-item>
+  </nz-breadcrumb>
+  <nz-page-header style="background-color: white;" class="site-page-header" (nzBack)="onBack()" nzBackIcon
+    nzTitle="Patient Profile">
+  </nz-page-header>
+  <div class="inner-content">
+    <nz-layout style="padding: 16px;">
+      <nz-sider style="text-align: center; width: 240px; min-width: 240px;">
+        <nz-card nzBorderless="true" [nzCover]="coverTemplate">
+          <nz-descriptions nzTitle="สถิตย์ เรียนพิศ" [nzColumn]="1" [nzSize]="'small'">
+            <nz-descriptions-item nzTitle="CID">3440000000949</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="HN">65090009</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="วันเกิด">12 มี.ค. 2522</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="อายุ">41 ปี</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="เพศ">ชาย</nz-descriptions-item>
+          </nz-descriptions>
+          <nz-divider [nzText]="titleOpdLast">
+            <ng-template #titleOpdLast>
+              <span nz-icon nzType="history"></span>
+              บริการล่าสุด
+            </ng-template>
+          </nz-divider>
+          <nz-descriptions [nzColumn]="1" nzLayout="vertical" [nzSize]="'small'">
+            <nz-descriptions-item nzTitle="วัน/เวลา">
+              <strong>13 มี.ค. 2566 13:30 น.</strong>
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="หน่วยบริการ">
+              <strong>โรงพยาบาลมหาสารคาม</strong>
+            </nz-descriptions-item>
+          </nz-descriptions>
+          <nz-divider [nzText]="titleAppoint">
+            <ng-template #titleAppoint>
+              <span nz-icon nzType="calendar"></span>
+              นัดหมาย
+            </ng-template>
+          </nz-divider>
+          <nz-descriptions [nzColumn]="1" nzLayout="vertical" [nzSize]="'small'">
+            <nz-descriptions-item nzTitle="หน่วยบริการ">
+              <strong>โรงพยาบาลขอนแก่น</strong>
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="วัน/เวลา">
+              31 มี.ค. 2566 13:30 น.
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="หมายเหตุ">
+              <span [innerHTML]="html | nl2br"></span>
+            </nz-descriptions-item>
+          </nz-descriptions>
+
+        </nz-card>
+        <ng-template #coverTemplate>
+          <div style="margin-top: 24px;">
+            <img alt="example" src="./assets/images/placeholder_male.png" style="width: 100px;" />
+          </div>
+        </ng-template>
+
+      </nz-sider>
+      <nz-content>
+        <div nz-row [nzGutter]="[16, 24]">
+          <div nz-col nzSpan="6">
+            <nz-card>
+              <nz-statistic [nzValue]="'120/80'" [nzTitle]="'ความดันโลหิต'" [nzPrefix]="prefixTpl"></nz-statistic>
+              <ng-template #prefixTpl><span nz-icon [nzTheme]="'twotone'" [nzTwotoneColor]="'#52c41a'"
+                  nzType="dashboard"></span></ng-template>
+            </nz-card>
+          </div>
+          <div nz-col nzSpan="6">
+            <nz-card>
+              <nz-statistic [nzValue]="(80 | number)!" [nzTitle]="'อัตราเต้นหัวใจ'"
+                [nzPrefix]="prefixTplHr"></nz-statistic>
+              <ng-template #prefixTplHr><span nz-icon [nzType]="'heart'" [nzTheme]="'twotone'"
+                  [nzTwotoneColor]="'#eb2f96'"></span></ng-template>
+            </nz-card>
+          </div>
+          <div nz-col nzSpan="6">
+            <nz-card>
+              <nz-statistic [nzValue]="(65.5 | number)!" [nzTitle]="'น้ำหนัก (กก.)'"></nz-statistic>
+            </nz-card>
+          </div>
+          <div nz-col nzSpan="6">
+            <nz-card>
+              <nz-statistic [nzValue]="(23.44 | number)!" [nzTitle]="'BMI (kg/m²)'"></nz-statistic>
+            </nz-card>
+          </div>
+        </div>
+        <div nz-row [nzGutter]="[16, 24]">
+          <div nz-col nzSpan="12">
+            <nz-card style="width:100%;">
+              <div echarts style="height: 280px;" [options]="bpChartOptions" class="demo-chart"></div>
+            </nz-card>
+          </div>
+          <div nz-col nzSpan="12">
+            <nz-card style="width:100%;">
+              <div echarts style="height: 280px;" [options]="pulseChartOptions" class="demo-chart"></div>
+            </nz-card>
+          </div>
+
+        </div>
+
+        <div nz-row [nzGutter]="[16, 24]">
+          <div nz-col nzSpan="12">
+            <nz-table nzTitle="ประวัติรับบริการผู้ป่วยนอก (OPD)" #smallTable nzSize="small" [nzData]="dataOpd">
+              <thead>
+                <tr>
+                  <th>วันที่</th>
+                  <th>หน่วยบริการ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of smallTable.data">
+                  <td>{{ data.name }}</td>
+                  <td>{{ data.address }}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </div>
+
+          <div nz-col nzSpan="12">
+            <nz-table nzTitle="ประวัติรับบริการผู้ป่วยใน (IPD)" #smallTable nzSize="small" [nzData]="dataOpd">
+              <thead>
+                <tr>
+                  <th>วันที่</th>
+                  <th>หน่วยบริการ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of smallTable.data">
+                  <td>{{ data.name }}</td>
+                  <td>{{ data.address }}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </div>
+        </div>
+      </nz-content>
+    </nz-layout>
+  </div>
+</nz-content>

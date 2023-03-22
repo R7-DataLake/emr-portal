@@ -18,9 +18,9 @@ const routes: Routes = [
     component: LayoutComponent,
     canActivate: [AuthGuard],
     children: [
-
       { path: 'dashboard', loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule) },
       { path: 'patient', loadChildren: () => import('./features/patient/patient.module').then(m => m.PatientModule) },
+      { path: 'patient-profile', loadChildren: () => import('./features/patient-profile/patient-profile.module').then(m => m.PatientProfileModule) },
     ]
   },
   {

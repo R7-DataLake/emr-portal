@@ -199,4 +199,8 @@ export class PatientComponent implements OnInit {
     console.log(data);
     this.mdlPatientIpdVisit.showModal(data.hospcode, data.an, data.hn, data.zone_key);
   }
+
+  openPatientProfile(data: any) {
+    this.router.navigate(['/patient-profile'])
+  }
 }
