@@ -1,5 +1,5 @@
 {
-  "name": "r7platform-userportal-web",
+  "name": "r7platform-emrportal-web",
   "version": "1.0.0",
   "scripts": {
     "ng": "npx ng",
