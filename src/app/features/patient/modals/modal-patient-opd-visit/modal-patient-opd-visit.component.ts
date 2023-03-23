@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import * as _ from 'lodash';
 import { DateTime } from 'luxon';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { EmrService } from '../../services/emr.service';
-import { PatientService } from '../../services/patient.service';
+import { EmrService } from '../../../../shared/services/emr.service';
+import { PatientService } from '../../../../shared/services/patient.service';
 
 @Component({
   selector: 'app-modal-patient-opd-visit',

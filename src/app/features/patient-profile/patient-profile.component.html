@@ -22,14 +22,18 @@
   <div class="inner-content">
     <nz-layout style="padding: 16px;">
       <nz-sider style="text-align: center; width: 240px; min-width: 240px;">
+
         <nz-card nzBorderless="true" [nzCover]="coverTemplate">
-          <nz-descriptions nzTitle="สถิตย์ เรียนพิศ" [nzColumn]="1" [nzSize]="'small'">
-            <nz-descriptions-item nzTitle="CID">3440000000949</nz-descriptions-item>
-            <nz-descriptions-item nzTitle="HN">65090009</nz-descriptions-item>
-            <nz-descriptions-item nzTitle="วันเกิด">12 มี.ค. 2522</nz-descriptions-item>
-            <nz-descriptions-item nzTitle="อายุ">41 ปี</nz-descriptions-item>
-            <nz-descriptions-item nzTitle="เพศ">ชาย</nz-descriptions-item>
-          </nz-descriptions>
+          <nz-spin nzTip="Loading..." [nzSpinning]="isLoadingPersonInfo">
+            <nz-descriptions [nzTitle]="personInfo.fullname" [nzColumn]="1" [nzSize]="'small'">
+              <nz-descriptions-item nzTitle="CID">{{personInfo.cid || '-'}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="HN">{{personInfo.hn || '-'}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="วันเกิด">{{personInfo.birth || '-'}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="อายุ">{{personInfo.age}} ปี</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="เพศ">{{personInfo.sex}}</nz-descriptions-item>
+            </nz-descriptions>
+          </nz-spin>
+
           <nz-divider [nzText]="titleOpdLast">
             <ng-template #titleOpdLast>
               <span nz-icon nzType="history"></span>
@@ -38,10 +42,10 @@
           </nz-divider>
           <nz-descriptions [nzColumn]="1" nzLayout="vertical" [nzSize]="'small'">
             <nz-descriptions-item nzTitle="วัน/เวลา">
-              <strong>13 มี.ค. 2566 13:30 น.</strong>
+              <strong>{{lastOpd.date_serv || '-'}} {{lastOpd.time_serv || '-'}} น.</strong>
             </nz-descriptions-item>
             <nz-descriptions-item nzTitle="หน่วยบริการ">
-              <strong>โรงพยาบาลมหาสารคาม</strong>
+              <strong>{{lastOpd.hospname}}</strong>
             </nz-descriptions-item>
           </nz-descriptions>
           <nz-divider [nzText]="titleAppoint">
@@ -50,71 +54,78 @@
               นัดหมาย
             </ng-template>
           </nz-divider>
-          <nz-descriptions [nzColumn]="1" nzLayout="vertical" [nzSize]="'small'">
-            <nz-descriptions-item nzTitle="หน่วยบริการ">
-              <strong>โรงพยาบาลขอนแก่น</strong>
-            </nz-descriptions-item>
-            <nz-descriptions-item nzTitle="วัน/เวลา">
-              31 มี.ค. 2566 13:30 น.
-            </nz-descriptions-item>
-            <nz-descriptions-item nzTitle="หมายเหตุ">
-              <span [innerHTML]="html | nl2br"></span>
-            </nz-descriptions-item>
-          </nz-descriptions>
+          <nz-spin [nzSpinning]="isLoadingAppoint" nzTip="Loading...">
+            <nz-descriptions [nzColumn]="1" nzLayout="vertical" [nzSize]="'small'">
+              <nz-descriptions-item nzTitle="หน่วยบริการ">
+                <strong>{{lastAppoint.hospname || '-'}}</strong>
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="วัน/เวลา">
+                {{lastAppoint.appoint_date || '-'}} {{lastAppoint.appoint_time || ''}} น.
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="หมายเหตุ">
+                <span [innerHTML]="lastAppoint.remark | nl2br"></span>
+              </nz-descriptions-item>
+            </nz-descriptions>
+
+          </nz-spin>
 
         </nz-card>
         <ng-template #coverTemplate>
           <div style="margin-top: 24px;">
-            <img alt="example" src="./assets/images/placeholder_male.png" style="width: 100px;" />
+            <img [src]="placeHolderImage" style="width: 100px;" />
           </div>
         </ng-template>
+
 
       </nz-sider>
       <nz-content>
         <div nz-row [nzGutter]="[16, 24]">
           <div nz-col nzSpan="6">
             <nz-card>
-              <nz-statistic [nzValue]="'120/80'" [nzTitle]="'ความดันโลหิต'" [nzPrefix]="prefixTpl"></nz-statistic>
+              <nz-statistic [nzValue]="lastBp" [nzTitle]="'ความดันโลหิต'" [nzPrefix]="prefixTpl"></nz-statistic>
               <ng-template #prefixTpl><span nz-icon [nzTheme]="'twotone'" [nzTwotoneColor]="'#52c41a'"
                   nzType="dashboard"></span></ng-template>
             </nz-card>
           </div>
           <div nz-col nzSpan="6">
             <nz-card>
-              <nz-statistic [nzValue]="(80 | number)!" [nzTitle]="'อัตราเต้นหัวใจ'"
-                [nzPrefix]="prefixTplHr"></nz-statistic>
+              <nz-statistic [nzValue]="lastPulse" [nzTitle]="'อัตราเต้นหัวใจ'" [nzPrefix]="prefixTplHr"></nz-statistic>
               <ng-template #prefixTplHr><span nz-icon [nzType]="'heart'" [nzTheme]="'twotone'"
                   [nzTwotoneColor]="'#eb2f96'"></span></ng-template>
             </nz-card>
           </div>
           <div nz-col nzSpan="6">
             <nz-card>
-              <nz-statistic [nzValue]="(65.5 | number)!" [nzTitle]="'น้ำหนัก (กก.)'"></nz-statistic>
+              <nz-statistic [nzValue]="(lastBmi.weight | number)!" [nzTitle]="'น้ำหนัก (กก.)'"></nz-statistic>
             </nz-card>
           </div>
           <div nz-col nzSpan="6">
             <nz-card>
-              <nz-statistic [nzValue]="(23.44 | number)!" [nzTitle]="'BMI (kg/m²)'"></nz-statistic>
+              <nz-statistic [nzValue]="(lastBmi.bmi | number: '1.2-2')!" [nzTitle]="'BMI (kg/m²)'"></nz-statistic>
             </nz-card>
           </div>
         </div>
         <div nz-row [nzGutter]="[16, 24]">
           <div nz-col nzSpan="12">
-            <nz-card style="width:100%;">
-              <div echarts style="height: 280px;" [options]="bpChartOptions" class="demo-chart"></div>
-            </nz-card>
+            <nz-spin nzTip="Loading..." [nzSpinning]="isLoadingBp">
+              <nz-card style="width:100%;">
+                <div echarts style="height: 280px;" (chartInit)="onBpChartInit($event)" [options]="bpChartOptions">
+                </div>
+              </nz-card>
+            </nz-spin>
           </div>
           <div nz-col nzSpan="12">
             <nz-card style="width:100%;">
-              <div echarts style="height: 280px;" [options]="pulseChartOptions" class="demo-chart"></div>
+              <div echarts style="height: 280px;" (chartInit)="onPulseChartInit($event)" [options]="pulseChartOptions">
+              </div>
             </nz-card>
           </div>
-
         </div>
 
         <div nz-row [nzGutter]="[16, 24]">
           <div nz-col nzSpan="12">
-            <nz-table nzTitle="ประวัติรับบริการผู้ป่วยนอก (OPD)" #smallTable nzSize="small" [nzData]="dataOpd">
+            <nz-table [nzLoading]="isLoadingOpd" nzTitle="ประวัติรับบริการผู้ป่วยนอก (OPD)" #opdDataTable nzSize="small"
+              [nzHideOnSinglePage]="true" [nzPageSize]="8" [nzData]="dataOpd">
               <thead>
                 <tr>
                   <th>วันที่</th>
@@ -122,26 +133,27 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let data of smallTable.data">
-                  <td>{{ data.name }}</td>
-                  <td>{{ data.address }}</td>
+                <tr *ngFor="let data of opdDataTable.data">
+                  <td>{{ data.date_serv }} เวลา {{data.time_serv}}</td>
+                  <td>{{ data.hospname }}</td>
                 </tr>
               </tbody>
             </nz-table>
           </div>
 
           <div nz-col nzSpan="12">
-            <nz-table nzTitle="ประวัติรับบริการผู้ป่วยใน (IPD)" #smallTable nzSize="small" [nzData]="dataOpd">
+            <nz-table [nzLoading]="isLoadingIpd" [nzHideOnSinglePage]="true" [nzPageSize]="8"
+              nzTitle="ประวัติรับบริการผู้ป่วยใน (IPD)" #ipdTableData nzSize="small" [nzData]="dataIpd">
               <thead>
                 <tr>
-                  <th>วันที่</th>
+                  <th>วันที่จำหน่าย</th>
                   <th>หน่วยบริการ</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let data of smallTable.data">
-                  <td>{{ data.name }}</td>
-                  <td>{{ data.address }}</td>
+                <tr *ngFor="let data of ipdTableData.data">
+                  <td>{{ data.datedsc }}</td>
+                  <td>{{ data.hospname }}</td>
                 </tr>
               </tbody>
             </nz-table>

@@ -2,9 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { DateTime } from 'luxon';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { PatientService } from '../../shared/services/patient.service';
 import { ModalIpdVisitComponent } from './modals/modal-ipd-visit/modal-ipd-visit.component';
 import { ModalPatientOpdVisitComponent } from './modals/modal-patient-opd-visit/modal-patient-opd-visit.component';
-import { PatientService } from './services/patient.service';
 
 @Component({
   selector: 'app-patient',
@@ -201,6 +201,17 @@ export class PatientComponent implements OnInit {
   }
 
   openPatientProfile(data: any) {
-    this.router.navigate(['/patient-profile'])
+    const obj: any = {
+      cid: data.cid,
+      hn: data.hn,
+      hospcode: data.hospcode,
+      zoneKey: data.zone_key
+    };
+    var encodedHash = btoa(JSON.stringify(obj));
+    this.router.navigate(['/patient-profile'], {
+      queryParams: {
+        hashKey: encodedHash
+      }
+    })
   }
 }
